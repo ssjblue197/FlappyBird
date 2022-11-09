@@ -2,7 +2,6 @@ const $ = (querry) => document.querySelector(querry);
 const $$ = (querry) => document.querySelectorAll(querry);
 
 let canvas = $('#canvas');
-console.log(canvas);
 let ctx = canvas.getContext('2d');
 
 canvas.height = 710;
@@ -177,7 +176,7 @@ function drawArrayPipe() {
 
 function newPipes() {
   for (let i = 0; i < 3; i++) {
-    let pipe = new Pipe(random(530, 600) * i, random(-200, -100), 200);
+    let pipe = new Pipe(random(530, 600) * i, random(-200, -100), 250);
     arrPipe.push(pipe);
   }
 }
@@ -188,13 +187,13 @@ function updateArrayPipe() {
   arrPipe.forEach((item) => {
     item.cX += item.dx;
   });
-  let y = random(-150, 100);
+  let y = random(-200, 100);
   if (arrPipe[0].cX <= -52) {
     arrPipe.splice(0, 1);
     let pipe = new Pipe(
       arrPipe[arrPipe.length - 1].cX + random(400, 500),
       random(-200, 100),
-      random(150, 200)
+      random(200, 250)
     );
     arrPipe.push(pipe);
   }
@@ -300,6 +299,7 @@ class Score {
     this.value = value;
   }
   draw() {
+    ctx.beginPath();
     this.split = this.value.toString().split('');
     if (this.value >= 10) {
       arrNumber.forEach((number) => {
@@ -348,10 +348,61 @@ class Score {
       });
     }
   }
+  drawScore() {
+    ctx.beginPath();
+    this.split = this.value.toString().split('');
+    if (this.value >= 10) {
+      arrNumber.forEach((number) => {
+        if (this.split[0] == number.name) {
+          ctx.drawImage(
+            sprites,
+            number.sX,
+            number.sY,
+            number.sW,
+            number.sH,
+            this.cX,
+            this.cY,
+            number.cW / 3,
+            number.cH / 3
+          );
+        }
+        if (this.split[1] == number.name) {
+          ctx.drawImage(
+            sprites,
+            number.sX,
+            number.sY,
+            number.sW,
+            number.sH,
+            this.cX + 18,
+            this.cY,
+            number.cW / 3,
+            number.cH / 3
+          );
+        }
+      });
+    } else {
+      arrNumber.forEach((number) => {
+        if (this.split[0] == number.name) {
+          ctx.drawImage(
+            sprites,
+            number.sX,
+            number.sY,
+            number.sW,
+            number.sH,
+            this.cX + 6,
+            this.cY - 56,
+            number.cW / 3,
+            number.cH / 3
+          );
+        }
+      });
+    }
+  }
 }
 
 let score = new Score(340, 300, 0);
-
+let oldMaxScore = window.localStorage.getItem('flappy-bird-best-score');
+let maxScore = new Score(340, 360, oldMaxScore ? Number(oldMaxScore) : 0);
 // class Bird
 class Bird {
   constructor(cX, cY) {
@@ -377,7 +428,7 @@ class Bird {
     this.cH = 50;
     this.i = 0;
     this.v = 0;
-    this.a = 0.5;
+    this.a = 0.3;
   }
   draw() {
     ctx.beginPath();
@@ -434,6 +485,8 @@ class Bird {
       // an diem
       if (this.cX == arrPipe[0].cX + 70 || this.cX == arrPipe[0].cX + 71) {
         score.value++;
+        maxScore.value = Math.max(score.value, maxScore.value);
+        window.localStorage.setItem('flappy-bird-best-score', maxScore.value);
       }
     }
   }
@@ -482,6 +535,8 @@ function draw() {
   bird.draw();
   if (game === 'end') {
     end.draw();
+    score.drawScore();
+    maxScore.drawScore();
   }
 }
 
