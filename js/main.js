@@ -177,7 +177,7 @@ function drawArrayPipe() {
 
 function newPipes() {
   for (let i = 0; i < 3; i++) {
-    let pipe = new Pipe(random(530, 600) * i, random(-200, -100), 200);
+    let pipe = new Pipe(random(530, 600) * i, random(-200, -100), 300);
     arrPipe.push(pipe);
   }
 }
@@ -194,7 +194,7 @@ function updateArrayPipe() {
     let pipe = new Pipe(
       arrPipe[arrPipe.length - 1].cX + random(400, 500),
       random(-200, 100),
-      random(150, 200)
+      random(200, 300)
     );
     arrPipe.push(pipe);
   }
