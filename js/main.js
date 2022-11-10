@@ -300,10 +300,10 @@ class Score {
   }
   draw() {
     ctx.beginPath();
-    this.split = this.value.toString().split('');
     if (this.value >= 10) {
+      this.split = this.value.toString().split('');
       arrNumber.forEach((number) => {
-        if (this.split[0] == number.name) {
+        if (Number(this.split[0]) === number.name) {
           ctx.drawImage(
             sprites,
             number.sX,
@@ -316,7 +316,7 @@ class Score {
             number.cH
           );
         }
-        if (this.split[1] == number.name) {
+        if (Number(this.split[1]) === number.name) {
           ctx.drawImage(
             sprites,
             number.sX,
@@ -332,7 +332,7 @@ class Score {
       });
     } else {
       arrNumber.forEach((number) => {
-        if (this.split[0] == number.name) {
+        if (Number(this.value) === number.name) {
           ctx.drawImage(
             sprites,
             number.sX,
@@ -350,10 +350,10 @@ class Score {
   }
   drawScore() {
     ctx.beginPath();
-    this.split = this.value.toString().split('');
     if (this.value >= 10) {
+      this.split = this.value.toString().split('');
       arrNumber.forEach((number) => {
-        if (this.split[0] == number.name) {
+        if (Number(this.split[0]) === number.name) {
           ctx.drawImage(
             sprites,
             number.sX,
@@ -366,7 +366,7 @@ class Score {
             number.cH / 3
           );
         }
-        if (this.split[1] == number.name) {
+        if (Number(this.split[1]) === number.name) {
           ctx.drawImage(
             sprites,
             number.sX,
@@ -382,7 +382,7 @@ class Score {
       });
     } else {
       arrNumber.forEach((number) => {
-        if (this.split[0] == number.name) {
+        if (Number(this.value) === number.name) {
           ctx.drawImage(
             sprites,
             number.sX,
@@ -467,7 +467,7 @@ class Bird {
       this.cY += this.v;
 
       // chim va cham noi nen dat
-      if (this.cY + this.cH + this.v >= 625) {
+      if (this.cY + this.cH >= 625) {
         game = 'end';
         this.v = 0;
         this.cY = 625;
